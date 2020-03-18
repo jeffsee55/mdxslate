@@ -8,8 +8,16 @@
     "start": "next start"
   },
   "dependencies": {
+    "@mdx-js/loader": "^1.5.7",
+    "@next/mdx": "^9.3.1",
+    "formik": "^2.1.4",
     "next": "9.3.1",
     "react": "16.13.0",
-    "react-dom": "16.13.0"
+    "react-dom": "16.13.0",
+    "slate": "^0.57.1",
+    "slate-history": "^0.57.1",
+    "slate-react": "^0.57.1",
+    "styled-components": "^5.0.1",
+    "yup": "^0.28.3"
   }
 }
