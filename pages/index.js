@@ -1,22 +1,73 @@
 // src/App.js
 import React from "react";
-import { MDXProvider } from "@mdx-js/react";
-import Hello from "../content/hello.md";
+import MDX from "@mdx-js/runtime";
+import Editor from "../components/editor";
+import styled from "styled-components";
 
 const Element = props => {
-  return <p {...props} />;
+  console.log(props);
+  return <h1 {...props} />;
+};
+
+const Img = styled.img`
+  max-width: 300px;
+  border: 10px solid white;
+  border-radius: 3px;
+`;
+
+const ContactUs = props => {
+  return (
+    <div>
+      Get in Touch
+      <input type="text" />
+      <button>{props.submitText}</button>
+    </div>
+  );
 };
 
 const components = {
-  h1: Element,
+  "heading-1": Element,
   h2: Element,
   p: Element,
   code: Element,
-  inlineCode: Element
+  inlineCode: Element,
+  Img: Img,
+  ContactUs,
+  Yo: props => <h1 {...props} />
 };
-export default props => (
-  <MDXProvider components={components}>
-    <Hello />
-    <main {...props} />
-  </MDXProvider>
-);
+
+const dummyText = `
+# Hello World
+
+
+This is a test
+
+
+<ContactUs submitText="Hello" />
+`;
+export default props => {
+  const [inEditMode, setInEditMode] = React.useState(true);
+  const [value, setValue] = React.useState(dummyText);
+  return (
+    <div>
+      {inEditMode ? (
+        <Editor
+          onExitEditMode={value => {
+            setInEditMode(false);
+            setValue(value);
+          }}
+          renderJsx={jsxString => (
+            <MDX components={components}>{jsxString}</MDX>
+          )}
+          components={components}
+          initialValue={value}
+        />
+      ) : (
+        <>
+          <button onClick={() => setInEditMode(true)}>Turn on edit mode</button>
+          <MDX components={components}>{value}</MDX>
+        </>
+      )}
+    </div>
+  );
+};

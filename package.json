@@ -9,15 +9,27 @@
   },
   "dependencies": {
     "@mdx-js/loader": "^1.5.7",
+    "@mdx-js/runtime": "^1.5.7",
     "@next/mdx": "^9.3.1",
+    "@orbiting/remark-preset": "^1.2.4",
     "formik": "^2.1.4",
+    "immutable": "^4.0.0-rc.12",
+    "mdast-util-phrasing": "^2.0.0",
     "next": "9.3.1",
+    "pretty-format": "^25.1.0",
     "react": "16.13.0",
     "react-dom": "16.13.0",
+    "remark": "^11.0.2",
+    "remark-mdx": "^1.5.7",
+    "remark-parse": "^7.0.2",
+    "remark-stringify": "^7.0.4",
     "slate": "^0.57.1",
     "slate-history": "^0.57.1",
+    "slate-md-serializer": "^5.4.5",
+    "slate-mdast-serializer": "^3.0.0",
     "slate-react": "^0.57.1",
     "styled-components": "^5.0.1",
+    "unified": "^8.4.2",
     "yup": "^0.28.3"
   }
 }
