@@ -10,14 +10,12 @@ import { Editor, Transforms, Range, createEditor } from "slate";
 import { withHistory } from "slate-history";
 import { Slate, Editable, ReactEditor, withReact } from "slate-react";
 import unified from "unified";
-import parse from "remark-parse";
 import remark from "remark";
 import mdx from "remark-mdx";
 import remarkSlate, { fromSlate } from "./remark-slate";
 import mdxStringify from "./stringify-jsx";
 import stringify from "remark-stringify";
 import styled from "styled-components";
-import visit from "unist-util-visit";
 
 const FallbackElement = styled.div``;
 
