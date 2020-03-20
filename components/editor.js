@@ -7,48 +7,29 @@ import React, {
 } from "react";
 import ReactDOM from "react-dom";
 import { Editor, Transforms, Range, createEditor } from "slate";
-import { withHistory } from "slate-history";
 import { Slate, Editable, ReactEditor, withReact } from "slate-react";
 import unified from "unified";
 import remark from "remark";
 import mdx from "remark-mdx";
 import remarkSlate, { fromSlate } from "./remark-slate";
-import mdxStringify from "./stringify-jsx";
+import mdxStringify from "./mdx-stringify";
 import stringify from "remark-stringify";
 import styled from "styled-components";
+import * as S from "./styles";
 
 const FallbackElement = styled.div``;
-
-// This could probably be a portal
-// that just positions itself based on
-// the ref - that's the best way to
-// guarantee we don't mess up the document
-// flow
-const JsxWrapper = styled.div`
-  display: block;
-`;
-const JsxInnerWrapper = styled.div`
-  display: inline-block;
-  position: relative;
-`;
-const TinaHover = styled.span`
-  position: absolute;
-  top: -4px;
-  left: -4px;
-  right: -4px;
-  bottom: -4px;
-  border: 2px solid royalblue;
-  z-index: 10;
-`;
-
-import * as Yup from "yup";
-import * as U from "./util";
 
 export const Portal = ({ children }) => {
   return ReactDOM.createPortal(children, document.body);
 };
 
-const SlatePoc = ({ renderJsx, components, onExitEditMode, initialValue }) => {
+const SlatePoc = ({
+  schemaMap,
+  renderJsx,
+  components,
+  onExitEditMode,
+  initialValue
+}) => {
   const ref = useRef();
   const [value, setValue] = useState([]);
   const [target, setTarget] = useState();
@@ -58,12 +39,12 @@ const SlatePoc = ({ renderJsx, components, onExitEditMode, initialValue }) => {
   const renderElement = useCallback(props => {
     if (props.element.type === "jsx") {
       return (
-        <JsxWrapper>
-          <JsxInnerWrapper>
-            <TinaHover />
+        <S.JsxWrapper>
+          <S.JsxInnerWrapper>
+            <S.TinaHover />
             {renderJsx(props.element.children[0].text)}
-          </JsxInnerWrapper>
-        </JsxWrapper>
+          </S.JsxInnerWrapper>
+        </S.JsxWrapper>
       );
     } else {
       const UserProvidedComponent = components[props.element.type];
@@ -87,10 +68,7 @@ const SlatePoc = ({ renderJsx, components, onExitEditMode, initialValue }) => {
       </span>
     );
   }, []);
-  const editor = useMemo(
-    () => withJSX(withReact(withHistory(createEditor()))),
-    []
-  );
+  const editor = useMemo(() => withReact(createEditor()), []);
 
   useEffect(() => {
     const doit = async () => {
@@ -106,7 +84,7 @@ const SlatePoc = ({ renderJsx, components, onExitEditMode, initialValue }) => {
     doit();
   }, [initialValue]);
 
-  const matchedComponents = COMPONENTS.filter(c =>
+  const matchedComponents = schemaMap.filter(c =>
     c.id.toLowerCase().startsWith(search.toLowerCase())
   );
 
@@ -186,7 +164,7 @@ const SlatePoc = ({ renderJsx, components, onExitEditMode, initialValue }) => {
         />
         {isSelectingComponent && matchedComponents.length > 0 && (
           <Portal>
-            <U.ComponentPicker
+            <S.ComponentPicker
               ref={ref}
               options={matchedComponents}
               onChoose={({ id, props }) => {
@@ -201,16 +179,6 @@ const SlatePoc = ({ renderJsx, components, onExitEditMode, initialValue }) => {
       </Slate>
     </>
   );
-};
-
-const withJSX = editor => {
-  const { isVoid } = editor;
-
-  editor.isVoid = element => {
-    return element.type === "jsx" ? true : isVoid(element);
-  };
-
-  return editor;
 };
 
 import prettyFormat from "pretty-format";
@@ -231,43 +199,5 @@ const insertComponent = (editor, id, { children, ...props }) => {
   Transforms.insertNodes(editor, component);
   Transforms.move(editor);
 };
-
-const COMPONENTS = [
-  {
-    id: "ContactUs",
-    inline: true,
-    props: {
-      validationSchema: Yup.object().shape({
-        submitUrl: Yup.string()
-          .url("Must be a url")
-          .required("Required"),
-        submitText: Yup.string()
-      }),
-      fields: [
-        { name: "submitUrl", type: "text" },
-        { name: "submitText", type: "text" }
-      ],
-      initialValues: {
-        submitUrl: "",
-        submitText: ""
-      }
-    }
-  },
-  {
-    id: "Img",
-    inline: true,
-    props: {
-      validationSchema: Yup.object({
-        src: Yup.string()
-          .url("Must be a url")
-          .required("Required")
-      }),
-      fields: [{ name: "src", type: "text" }],
-      initialValues: {
-        src: ""
-      }
-    }
-  }
-];
 
 export default SlatePoc;

@@ -8,6 +8,35 @@ import React, {
 import { Formik, Form, Field } from "formik";
 import styled from "styled-components";
 
+// This could probably be a portal
+// that just positions itself based on
+// the ref - that's the best way to
+// guarantee we don't mess up the document
+// flow
+export const JsxWrapper = styled.div`
+  display: block;
+`;
+export const JsxInnerWrapper = styled.div`
+  display: inline-block;
+  position: relative;
+`;
+export const TinaHover = styled.span`
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  z-index: 10;
+  border-radius: 3px;
+  border: 2px solid royalblue;
+  opacity: 0;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
 export const StyledComponentPicker = styled.div`
   top: -9999px;
   left: -9999px;
@@ -64,6 +93,15 @@ export const ComponentPicker = React.forwardRef(
   }
 );
 
+const Label = styled.label`
+  display: block;
+`;
+const StyledField = styled(Field)`
+  display: block;
+  margin: 4px 0;
+  width: 100%;
+`;
+
 export const PropPicker = ({ id, props, onPropsSubmitted }) => {
   return (
     <PropsContainer>
@@ -78,10 +116,8 @@ export const PropPicker = ({ id, props, onPropsSubmitted }) => {
           <Form>
             {props.fields.map(field => (
               <>
-                <label>
-                  {field.name}
-                  <Field name={field.name} />
-                </label>
+                <Label>{field.name}</Label>
+                <StyledField name={field.name} />
                 <div>{touched[field.name] && errors[field.name]}</div>
               </>
             ))}
