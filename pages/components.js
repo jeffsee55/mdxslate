@@ -1,5 +1,20 @@
 import styled, { createGlobalStyle } from "styled-components";
 
+export const SplitView = ({ leftSide, rightSide }) => {
+  return (
+    <div
+      style={{
+        padding: "3rem",
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr"
+      }}
+    >
+      <div>{leftSide}</div>
+      <div>{rightSide}</div>
+    </div>
+  );
+};
+
 export const H1 = styled.h1`
   font-size: 48px;
   line-height: 1.3;
@@ -13,6 +28,7 @@ export const P = styled.p`
   font-size: 16px;
   line-height: 1.2;
   margin-bottom: 1rem;
+  color: ${p => p.theme.brandColor};
 `;
 export const Code = styled.code``;
 export const Pre = styled.pre``;
@@ -23,7 +39,6 @@ export const Img = styled.img`
   border-radius: 3px;
 `;
 const ContactWrapper = styled.div`
-  margin: 1rem 0;
   padding: 1rem;
 `;
 
@@ -34,7 +49,9 @@ export const ContactUs = props => {
         Get in Touch
         <input type="text" />
       </label>
-      <button>{props.submitText}</button>
+      <button onClick={() => alert("event listener working")}>
+        {props.submitText}
+      </button>
     </ContactWrapper>
   );
 };

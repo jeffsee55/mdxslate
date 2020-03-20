@@ -82,7 +82,10 @@ export const ComponentPicker = React.forwardRef(
         ) : (
           options.map(option => {
             return (
-              <ComponentOption onClick={() => setOption(option.id)}>
+              <ComponentOption
+                key={option.id}
+                onClick={() => setOption(option.id)}
+              >
                 {option.id}
               </ComponentOption>
             );

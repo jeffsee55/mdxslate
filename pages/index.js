@@ -7,6 +7,7 @@ import * as Yup from "yup";
 
 const components = {
   "heading-1": S.H1,
+  h1: S.H1,
   paragraph: S.P,
   p: S.P,
   code: S.Pre,
@@ -18,7 +19,7 @@ const components = {
 const dummyText = `
 # Hello World
 
-This is a test
+Here is some text, it's a paragraph with styling provided by a theme
 
 <ContactUs submitText="Hello" />
 `;
@@ -26,27 +27,41 @@ export default props => {
   const [inEditMode, setInEditMode] = React.useState(true);
   const [value, setValue] = React.useState(dummyText);
   return (
-    <ThemeProvider theme={{ bg: "tomato" }}>
+    <ThemeProvider theme={{ brandColor: "tomato" }}>
       <S.GlobalStyle />
-      {inEditMode ? (
-        <Editor
-          schemaMap={schemaMap}
-          onExitEditMode={value => {
-            setInEditMode(false);
-            setValue(value);
-          }}
-          renderJsx={jsxString => (
-            <MDX components={components}>{jsxString}</MDX>
-          )}
-          components={components}
-          initialValue={value}
-        />
-      ) : (
-        <>
-          <button onClick={() => setInEditMode(true)}>Turn on edit mode</button>
-          <MDX components={components}>{value}</MDX>
-        </>
-      )}
+      <S.SplitView
+        leftSide={
+          inEditMode ? (
+            <Editor
+              schemaMap={schemaMap}
+              onExitEditMode={value => {
+                setInEditMode(false);
+                setValue(value);
+              }}
+              renderJsx={jsxString => (
+                <MDX components={components}>{jsxString}</MDX>
+              )}
+              components={components}
+              initialValue={value}
+            />
+          ) : (
+            <>
+              <button onClick={() => setInEditMode(true)}>
+                Turn on edit mode
+              </button>
+              <MDX components={components}>{value}</MDX>
+            </>
+          )
+        }
+        rightSide={
+          <>
+            <h1>Markdown string:</h1>
+            <pre style={{ fontFamily: "monospace", fontSize: "18px" }}>
+              {value}
+            </pre>
+          </>
+        }
+      />
     </ThemeProvider>
   );
 };
