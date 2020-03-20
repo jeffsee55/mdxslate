@@ -5,7 +5,6 @@ import Editor from "../components/editor";
 import styled from "styled-components";
 
 const Element = props => {
-  console.log(props);
   return <h1 {...props} />;
 };
 
@@ -27,7 +26,7 @@ const ContactUs = props => {
 
 const components = {
   "heading-1": Element,
-  h2: Element,
+  paragraph: Element,
   p: Element,
   code: Element,
   inlineCode: Element,

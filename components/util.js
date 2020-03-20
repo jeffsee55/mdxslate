@@ -15,7 +15,7 @@ export const StyledComponentPicker = styled.div`
   background: white;
   border-radius: 4px;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
-  z-index: 1;
+  z-index: 100;
   width: 250px;
   padding: 20px;
   padding: "3px 3px 2px";

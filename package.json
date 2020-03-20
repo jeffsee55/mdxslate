@@ -30,6 +30,7 @@
     "slate-react": "^0.57.1",
     "styled-components": "^5.0.1",
     "unified": "^8.4.2",
+    "unist-util-visit": "^2.0.2",
     "yup": "^0.28.3"
   }
 }

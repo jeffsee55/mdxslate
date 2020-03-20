@@ -14,9 +14,10 @@ import parse from "remark-parse";
 import remark from "remark";
 import mdx from "remark-mdx";
 import remarkSlate, { fromSlate } from "./remark-slate";
-import stringifyJsx from "./stringify-jsx";
+import mdxStringify from "./stringify-jsx";
 import stringify from "remark-stringify";
 import styled from "styled-components";
+import visit from "unist-util-visit";
 
 const FallbackElement = styled.div``;
 
@@ -79,10 +80,10 @@ const SlatePoc = ({ renderJsx, components, onExitEditMode, initialValue }) => {
     return (
       <span
         {...attributes}
-        style={{
-          fontWeight: leaf.bold ? "bold" : "normal",
-          fontStyle: leaf.italic ? "italic" : "normal"
-        }}
+        // style={{
+        //   fontWeight: leaf.bold ? "bold" : "normal",
+        //   fontStyle: leaf.italic ? "italic" : "normal"
+        // }}
       >
         {children}
       </span>
@@ -113,11 +114,13 @@ const SlatePoc = ({ renderJsx, components, onExitEditMode, initialValue }) => {
 
   useEffect(() => {
     if (target && matchedComponents.length > 0) {
-      const el = ref.current;
-      const domRange = ReactEditor.toDOMRange(editor, target);
-      const rect = domRange.getBoundingClientRect();
-      el.style.top = `${rect.top + window.pageYOffset + 24}px`;
-      el.style.left = `${rect.left + window.pageXOffset}px`;
+      if (ref.current) {
+        const el = ref.current;
+        const domRange = ReactEditor.toDOMRange(editor, target);
+        const rect = domRange.getBoundingClientRect();
+        el.style.top = `${rect.top + window.pageYOffset + 24}px`;
+        el.style.left = `${rect.left + window.pageXOffset}px`;
+      }
     }
   }, [matchedComponents.length, editor, index, search, target]);
 
@@ -135,8 +138,8 @@ const SlatePoc = ({ renderJsx, components, onExitEditMode, initialValue }) => {
         onClick={() => {
           const mdAst = fromSlate({ type: "root", children: value });
           const markdownString = unified()
-            .use(stringifyJsx)
             .use(stringify)
+            .use(mdxStringify)
             .stringify(mdAst);
           onExitEditMode(markdownString);
         }}
