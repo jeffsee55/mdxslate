@@ -3,12 +3,12 @@ function mdxStringify() {
   const compiler = this.Compiler;
   function attachParser(parser) {
     const blocks = parser.prototype.blockTokenizers;
-    const inlines = parser.prototype.inlineTokenizers;
+    // const inlines = parser.prototype.inlineTokenizers;
     const methods = parser.prototype.blockMethods;
 
     blocks.esSyntax = tokenizeEsSyntax;
     blocks.html = wrap(block);
-    inlines.html = wrap(inlines.html, inlineJsx);
+    // inlines.html = wrap(inlines.html, inlineJsx);
 
     methods.splice(methods.indexOf("paragraph"), 0, "esSyntax");
   }
