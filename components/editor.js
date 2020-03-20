@@ -38,11 +38,10 @@ const SlatePoc = ({
   const [search, setSearch] = useState("");
   const renderElement = useCallback(props => {
     if (props.element.type === "jsx") {
-      console.log(props);
       return (
         <S.JsxWrapper>
           <S.JsxInnerWrapper>
-            <S.TinaHover onClick={() => alert("doit")} />
+            <S.TinaHover onClick={() => alert("activate form")} />
             {renderJsx(props.element.children[0].text)}
           </S.JsxInnerWrapper>
         </S.JsxWrapper>
@@ -118,7 +117,6 @@ const SlatePoc = ({
             .use(stringify)
             .use(mdxStringify)
             .stringify(mdAst);
-          console.log(markdownString);
           onExitEditMode(markdownString);
         }}
       >

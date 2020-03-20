@@ -118,11 +118,11 @@ export const PropPicker = ({ id, props, onPropsSubmitted }) => {
         {({ errors, touched }) => (
           <Form>
             {props.fields.map(field => (
-              <>
+              <div key={field.name}>
                 <Label>{field.name}</Label>
                 <StyledField name={field.name} />
                 <div>{touched[field.name] && errors[field.name]}</div>
-              </>
+              </div>
             ))}
             <button type="submit">Submit</button>
           </Form>

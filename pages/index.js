@@ -16,8 +16,7 @@ const components = {
   ContactUs: S.ContactUs
 };
 
-const dummyText = `
-# Hello World
+const dummyText = `# Hello World
 
 Here is some text, it's a paragraph with styling provided by a theme
 
