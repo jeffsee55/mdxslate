@@ -15,7 +15,7 @@
     "formik": "^2.1.4",
     "immutable": "^4.0.0-rc.12",
     "mdast-util-phrasing": "^2.0.0",
-    "next": "9.3.1",
+    "next": "9.3.2",
     "pretty-format": "^25.1.0",
     "react": "16.13.0",
     "react-dom": "16.13.0",
